@@ -1,8 +1,3 @@
-// TODO: Add generated objects
-// TODO: Arrowheads not attached to vector field lines
-// TODO: Gravity Constant doesn't affect field lines.
-// TODO: Low quality graphics option
-
 package gravSim;
 
 import Panel.*;
@@ -271,8 +266,6 @@ public class GravSim implements Runnable, ActionListener,
 		selectButton_ = new JButton(selectIcon_);
 		prepareControl(selectButton_);
 		selectButton_.setToolTipText("select and move objects");
-		// selectButton_.setBorder(BorderFactory.createLineBorder(new
-		// Color(RADIO_SELECTION_COLOR),2));
 		selectButton_.addActionListener(this);
 
 		changeVelIcon_ = new ImageIcon(getClass().getResource("/res/ChangeVel.png"));
@@ -422,8 +415,6 @@ public class GravSim implements Runnable, ActionListener,
 		errorMsg_.setMessagePanelListener(this);
 		errorMsg_.setVisible(false);
 
-		// clearButton_
-
 		colorButtons_ = new ArrayList<JButton>();
 		
 		int numColors = 8;
@@ -513,8 +504,6 @@ public class GravSim implements Runnable, ActionListener,
 		zoomSlider_.setOpaque(false);
 		
 		zoomSlider_.addChangeListener(this);
-		//zoomSlider_.setUI(new GravSlider(zoomSlider_,zoomSlider_.getBorder()));
-		//zoomSlider_.setBorder(new EmptyBorder(zoomSlider_.getBorder().getBorderInsets(zoomSlider_)));
 		lpane_.add(zoomSlider_, new Integer(2), 0);
 		SwingUtilities.invokeLater(new Runnable(){
 	        @Override public void run() {
@@ -522,20 +511,6 @@ public class GravSim implements Runnable, ActionListener,
 	    		zoomSlider_.setBorder(new EmptyBorder(zoomSlider_.getBorder().getBorderInsets(zoomSlider_)));
 	        }
 	    });
-		/*
-		 * JSlider zoomSlider2_ = new JSlider(JSlider.VERTICAL, 0, 500, 500);
-		 * zoomSlider2_.setBounds(50, 50, 20, 300);
-		 * zoomSlider2_.setBackground(Color.black);
-		 * zoomSlider2_.setFocusable(false); zoomSlider2_.setOpaque(false);
-		 * zoomSlider2_.setBorder(BorderFactory.createLineBorder(new
-		 * Color(UNSELECTED_COLOR))); zoomSlider2_.addChangeListener(this);
-		 * lpane_.add(zoomSlider2_,new Integer(2),0);
-		 */
-
-		// Border line = new LineBorder(Color.WHITE);
-		// Border margin = new EmptyBorder(5, 15, 5, 15);
-		// Border compound = new CompoundBorder(line, margin);
-		// playButton_.setBorder(compound);
 		
 		useBilinear_ = true;
 
@@ -611,15 +586,12 @@ public class GravSim implements Runnable, ActionListener,
 		massField_.setVisible(state);
 		radiusLabel_.setVisible(state);
 		radiusField_.setVisible(state);
-		// toggleInterfaceButton_.setVisible(state);
 		settingsButton_.setVisible(state);
 		aboutButton_.setVisible(state);
 		massButton_.setVisible(state);
 		chargeButton_.setVisible(state);
 		circularOrbitButton_.setVisible(state);
 		potentialFieldButton_.setVisible(state);
-		// confirmClearMsg_.setVisible(state);
-		// aboutInfoMsg_.setVisible(state);
 		zoomSlider_.setVisible(state);
 		currentObjectLabel_.setVisible(state);
 		gravityConstantField_.setVisible(state);
@@ -800,41 +772,32 @@ public class GravSim implements Runnable, ActionListener,
 	@Override
 	public void run() {
 
-		//try {
-			long lastTime = System.currentTimeMillis();
-			while (true) {
-				int maxWait = 6;
-				long waitTime = 0;
-				long difference = System.currentTimeMillis() - lastTime;
-				waitTime = maxWait - difference;
-				if (waitTime < 0)
-					waitTime = 0;
-				try {
-					Thread.sleep(waitTime);
-				} catch (InterruptedException ex) {
-				}
-				
-				synchronized (displayPanel_) {
-					lastTime = System.currentTimeMillis();
-					int num = (int) Math.ceil(difference/maxWait);
-					if (num == 0)
-						num = 1;
-					for (int i = 0; i < num; i++) {
-						displayPanel_.runCalculations();
-					}
-					displayPanel_.updateFields();
-					displayPanel_.repaint();
-				}
-				
+		long lastTime = System.currentTimeMillis();
+		while (true) {
+			int maxWait = 6;
+			long waitTime = 0;
+			long difference = System.currentTimeMillis() - lastTime;
+			waitTime = maxWait - difference;
+			if (waitTime < 0)
+				waitTime = 0;
+			try {
+				Thread.sleep(waitTime);
+			} catch (InterruptedException ex) {
 			}
-		  /*} catch (Exception e) { ArrayList<String> messages = new
-		  ArrayList<String>();
-		  messages.add("An unexpected error has occured:");
-		  messages.add(e.toString());
-		  messages.add("Please refresh your browser");
-		  errorMsg_.setMessages(messages); errorMsg_.setVisible(true);
-		  System.out.println(e); }*/
-		 
+
+			synchronized (displayPanel_) {
+				lastTime = System.currentTimeMillis();
+				int num = (int) Math.ceil(difference / maxWait);
+				if (num == 0)
+					num = 1;
+				for (int i = 0; i < num; i++) {
+					displayPanel_.runCalculations();
+				}
+				displayPanel_.updateFields();
+				displayPanel_.repaint();
+			}
+
+		}
 
 	}
 
@@ -904,33 +867,26 @@ public class GravSim implements Runnable, ActionListener,
 			if (event.getDocument() == massField_.getDocument()) {
 				double n = Double
 						.parseDouble(removeCommas(massField_.getText()));
-				// synchronized(displayPanel_) {
 				if (displayPanel_.getMode() == ClickMode.ADD)
 					displayPanel_.setMass(n);
 				else
 					displayPanel_.setCurrentMass(n);
-				// }
 			}
 			if (event.getDocument() == radiusField_.getDocument()) {
 				double n = Double.parseDouble(removeCommas(radiusField_
 						.getText()));
-				// synchronized(displayPanel_) {
 				if (displayPanel_.getMode() == ClickMode.ADD)
 					displayPanel_.setRadius(n);
 				else
 					displayPanel_.setCurrentRadius(n);
-				// }
 			}
 			if (event.getDocument() == gravityConstantField_.getDocument()) {
 				double n = Double
 						.parseDouble(removeCommas(gravityConstantField_
 								.getText()));
-				// synchronized(displayPanel_) {
 				displayPanel_.setGravityConstant(n);
-				// }
 			}
 		} catch (NumberFormatException e) {
-			// System.out.println(e);
 		}
 	}
 

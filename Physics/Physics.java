@@ -4,14 +4,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Physics {
-	/*public static float fastSqrt(float z) {
-		int temp = Float.floatToIntBits(z);
-		z -= 1 << 23; // Subtract 2^m.
-		z = (int)(z) >> 1; /* Divide by 2.
-		z += 1 << 29; // Add ((b + 1) / 2) * 2^m. 
-		 
-		return new Float(Integer.toBinaryString(temp));
-	} */
 	public static double getGravityForce(double gravityConstant, double mass1, double mass2, double dist) { // Newton's Universal Law of Gravitation
 		if (mass1 == 0)
 			return (-gravityConstant*mass2)/(dist*dist);

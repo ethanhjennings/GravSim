@@ -232,7 +232,6 @@ public class SettingsPanel extends JPanel implements ActionListener, ChangeListe
     	add(field);
 	}
 	private void prepareControl(JComponent b) {
-		//b.setForeground(new Color(0xffffffff));
         b.setBackground(new Color(0xff000000));
         b.setFocusable(false);
         b.setBorder(BorderFactory.createLineBorder(new Color(0xffaaaaaa)));

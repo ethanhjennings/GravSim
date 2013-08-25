@@ -71,7 +71,6 @@ public class MessagePanel extends JPanel implements ActionListener {
 		}
 		
         setBackground(new Color(0xff000000));
-        //setFocusable(false);
         setBorder(BorderFactory.createLineBorder(new Color(0xffaaaaaa)));
 	}
 	public void setMessagePanelListener(MessagePanelListener listener) {
@@ -101,9 +100,6 @@ public class MessagePanel extends JPanel implements ActionListener {
 		else if (buttonMode_ == ButtonMode.OK)
 			okay_.repaint();
 		
-		
-		//((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); 
-		//((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(new Font("Arial", Font.PLAIN, 14));
 		g.setColor(new Color(0xffffffff));
 		for (int i = 0; i < messages_.size(); i++) {

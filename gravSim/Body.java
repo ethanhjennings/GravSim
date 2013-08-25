@@ -195,13 +195,6 @@ public class Body {
 			}
 				
 		}
-		//if (mass_ == 0) {
-		//	double thickness =  (radius_*2)*0.1;
-		//	double size = (radius_*2)*0.8;
-		//	g.setColor(Color.black);
-		//	g.fillRect((int)(pos_.x_-size*0.35), (int)(pos_.y_-size*0.25), (int)(size*0.7), (int)thickness);
-		//	g.fillRect((int)(pos_.x_-thickness/2), (int)(pos_.y_-size*0.25), (int)thickness, (int)(size*0.8));
-		//}
 		if (drawSelection) {
 			g.setColor(Color.WHITE);
 			Stroke tempStroke = ((Graphics2D)g).getStroke();

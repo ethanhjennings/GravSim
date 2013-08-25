@@ -47,7 +47,6 @@ public class GravSlider extends MetalSliderUI  {
     }
     @Override 
     protected void paintMajorTickForHorizSlider(Graphics g, Rectangle rect, int x) {
-    	//g.setColor(slider_.getForeground());
     	g.setColor(Color.white);
     	g.drawLine(x, (slider_.getHeight()+20)/2, x, slider_.getHeight());
     } 
@@ -62,24 +61,20 @@ public class GravSlider extends MetalSliderUI  {
     		paintMajorTickForHorizSlider(g,new Rectangle(),(int)Math.round(xPos));
     		xPos += spacing;
     	}
-    	//paintMajorTickForHorizSlider(g,new Rectangle(),5);
 
     }
     @Override
     protected void paintMinorTickForHorizSlider(Graphics g, Rectangle rect, int x) {
-    	//g.setColor(slider_.getForeground());
     	g.setColor(Color.white);
     	g.drawLine(10, 0, 10, slider_.getHeight());
     }
     @Override
     protected void paintMajorTickForVertSlider(Graphics g, Rectangle rect, int x) {
-    	//g.setColor(slider_.getForeground());
     	g.setColor(Color.white);
     	g.drawLine(10, 0, 10, slider_.getHeight());
     } 
     @Override
     protected void paintMinorTickForVertSlider(Graphics g, Rectangle rect, int x) {
-    	//g.setColor(slider_.getForeground());
     	g.setColor(Color.white);
     	g.drawLine(10, 0, 10, slider_.getHeight());
     }
@@ -110,37 +105,3 @@ public class GravSlider extends MetalSliderUI  {
     }
 
 }
-
-/*
-public class GravSlider extends JSlider {
-	public GravSlider(int orientation, int min, int max, int startValue) {
-		super(orientation,min,max,startValue);
-	} 
-	public void paintComponent(Graphics g) {
-		if (this.getOrientation() == SwingConstants.VERTICAL) {
-			getBorder().paintBorder(this, g, 5, 5, getBounds().width-10, getBounds().height-10);
-			double yPos_ = (1-(double)sliderModel.getValue()/sliderModel.getMaximum())*(getBounds().height-10)+5;
-			g.setColor(getBackground());
-			if (getValueIsAdjusting())
-				g.setColor(getForeground());
-			else
-				g.setColor(getBackground());
-			g.fillRect(0, (int)yPos_ - 5, getBounds().width, 10);
-			getBorder().paintBorder(this, g, 0, (int)yPos_ - 5, getBounds().width, 10);
-		}
-		else {
-			getBorder().paintBorder(this, g, 5, 5, getBounds().width-10, getBounds().height-10);
-			double xPos_ = ((double)sliderModel.getValue()/sliderModel.getMaximum())*(getBounds().width-10)+5;
-			g.setColor(getBackground());
-			if (getValueIsAdjusting())
-				g.setColor(getForeground());
-			else
-				g.setColor(getBackground());
-			g.fillRect((int)xPos_ - 5, 0, 10, getBounds().height);
-			getBorder().paintBorder(this, g, (int)xPos_ - 5, 0, 10, getBounds().height);
-		}
-		
-	}
-	public void paintBorder(Graphics g) {
-	}
-}*/

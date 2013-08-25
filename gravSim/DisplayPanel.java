@@ -173,8 +173,6 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 		bodyMass_ = 10;
 		gravityConstant_ = 0.7;
 		numIterations_ = 8;
-		//bodies_.add(new Body(new Vector2D(0,0), new Color(0xff00ff00), null, 50, 10, false));
-		//bodies_.add(new Body(new Vector2D(50,200), new Color(0xff00ff00), null, 50, 10, false));
 		Random r = new Random();
 		
 		hintTextAlpha_ = 0;
@@ -188,7 +186,6 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 		
 		int resolution = 7;
 		smoothGravityField_ = new GravityField(false,true,gravityConstant_,appletWidth/resolution, appletHeight/resolution, appletWidth, appletHeight, resolution);
-		//potentialGravityField_ = new GravityField(false,true,gravityConstant_,appletWidth/resolution, appletHeight/resolution, appletWidth, appletHeight, resolution);
 		resolution = 20;
 		vectorGravityField_ = new GravityField(true,false,gravityConstant_,appletWidth/resolution, appletHeight/resolution, appletWidth, appletHeight, resolution);
 		
@@ -203,16 +200,7 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 		int numBodies = 50;
 		int num = 0;
 		double angleBetween = Math.PI*2/numBodies;
-		//for (int i = 0; i < numBodies; i++) {
-		//	Vector2D pos = new Vector2D(Math.cos(angleBetween*i)*100+appletWidth/2,Math.sin(angleBetween*i)*100+appletHeight/2);
-		//		bodies_.add(new Body(pos, new Color(0xff00ff00), null, 10, 5, true));
-		//}
-		//bodies_.add(new Body(new Vector2D(appletWidth/2,appletHeight/2), new Color(0xff00ff00), null, 10, 1, false));
-		//bodies_.add(new Body(new Vector2D(appletWidth/2,appletHeight/2), new Color(0xff00ff00), null, 500, 20, true));
-		
-		//for (int i = 0; i < numBodies; i++) {
-		//	bodies_.add(new Body(Vector2D.createRandom(r,-100,appletWidth+100,-100,appletHeight+100), new Color(newBodyColor_.getRGB()), null, 10, 5, false));
-		//}
+
 		holdingOnSelectedBody_ = false;
 		selectedBody_ = null;
 		
@@ -252,7 +240,6 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 					cameraPos_.x_ = -followingBody_.getPos().x_+appletWidth_/2;// - cameraPos_.x_)*0.1;
 					cameraPos_.y_ = -followingBody_.getPos().y_+appletHeight_/2; //- cameraPos_.y_)*0.1;
 				}
-				//smoothGravityField_.drawField(g);
 				long startTime = System.currentTimeMillis();
 				
 				
@@ -313,8 +300,6 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 						}
 						elapsedTimeRender_ /= lastRenderFrames_.size();
 					}
-					//elapsedTimeRender_ = Math.round(elapsedTimeRender_*100)/100;
-					//elapsedTimeRender_ = System.currentTimeMillis() - startTime;
 				g.setColor(Color.WHITE);
 				((Graphics2D)g).setTransform(trans);
 
@@ -355,18 +340,14 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 		@Override
 		public Void call() {
 			if (vectorField_) {
-				//synchronized(bodies_) {
-					for (Body b: bodyListCopy_) {
-						vectorGravityField_.addObjectToField(realPosToScreen(b.getPos()), realDistToScreen(b.getMass()), realDistToScreen(b.getRadius()), usingCharges_,startYValue_,endYValue_);
-					}
-				//}
+				for (Body b: bodyListCopy_) {
+					vectorGravityField_.addObjectToField(realPosToScreen(b.getPos()), realDistToScreen(b.getMass()), realDistToScreen(b.getRadius()), usingCharges_,startYValue_,endYValue_);
+				}
 			}
 			else {
-				//synchronized(bodies_) {
-					for (Body b: bodyListCopy_) {
-						smoothGravityField_.addObjectToField(realPosToScreen(b.getPos()), realDistToScreen(b.getMass()), realDistToScreen(b.getRadius()), usingCharges_,startYValue_,endYValue_);
-					}
-				//}
+				for (Body b: bodyListCopy_) {
+					smoothGravityField_.addObjectToField(realPosToScreen(b.getPos()), realDistToScreen(b.getMass()), realDistToScreen(b.getRadius()), usingCharges_,startYValue_,endYValue_);
+				}
 			}
 			numFinished_.numFinished_++;
 			return null;
@@ -381,32 +362,6 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 		for (Body b : bodies_) {
 			listCopy.add(b);
 		}
-		
-		/*gravityFieldFutures_.clear();
-		Collection tasks = new ArrayList<GravityFieldRunnable>();
-		for (int i = 0; i < numThreads_; i++) {
-			tasks.add(new GravityFieldRunnable(vectorField,0,smoothGravityField_.getFieldHeight()-1,listCopy,numFinished_));
-				//gravityFieldFutures_.add(taskExecutor_.submit(new GravityFieldRunnable(vectorField,0,smoothGravityField_.getFieldHeight()-1,listCopy,numFinished_)));
-		}
-		try {
-			taskExecutor_.invokeAll(tasks);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		if (vectorField) {
-			for (Body b: listCopy) {
-				vectorGravityField_.addObjectToField(realPosToScreen(b.getPos()), realDistToScreen(b.getMass()), realDistToScreen(b.getRadius()), usingCharges_,0,vectorGravityField_.getFieldHeight()-1);
-			}
-
-		}
-		else {
-			for (Body b: listCopy) {
-				smoothGravityField_.addObjectToField(realPosToScreen(b.getPos()), realDistToScreen(b.getMass()), realDistToScreen(b.getRadius()), usingCharges_,0,smoothGravityField_.getFieldHeight()-1);
-			}
-		}*/
 		
 		Collection<GravityFieldRunnable> tasks = new ArrayList<GravityFieldRunnable>();
 		if (vectorField) {
@@ -426,12 +381,7 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 				if (i == numThreads_ - 1)
 					tasks.add(new GravityFieldRunnable(vectorField,i*verticalSlice,smoothGravityField_.getFieldHeight()-1,listCopy,numFinished_));
 				else
-					tasks.add(new GravityFieldRunnable(vectorField,i*verticalSlice,(i+1)*verticalSlice-1,listCopy,numFinished_));
-				//if (i == numThreads_ - 1)
-				//	gravityFieldFutures_.add(taskExecutor_.submit(new GravityFieldRunnable(vectorField,i*verticalSlice,smoothGravityField_.getFieldHeight()-1,listCopy,numFinished_)));
-				//else
-				//	gravityFieldFutures_.add(taskExecutor_.submit(new GravityFieldRunnable(vectorField,i*verticalSlice,(i+1)*verticalSlice-1,listCopy,numFinished_)));
-			}
+					tasks.add(new GravityFieldRunnable(vectorField,i*verticalSlice,(i+1)*verticalSlice-1,listCopy,numFinished_));			}
 		}
 		
 		try {
@@ -440,53 +390,7 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		//taskExecutor.shutdown();
-		//try {
-		//  taskExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-		//} catch (InterruptedException e) {
-		//  
-		//}
 	}
-	
-	/*public void startCalculatingGravity(boolean vectorField) {
-		numThreads_ = 4;
-		ArrayBlockingQueue<Runnable> queue = new ArrayBlockingQueue<Runnable>(4);
-		taskExecutor_ = new ThreadPoolExecutor(4,4,0,TimeUnit.MILLISECONDS,queue);
-		if (vectorField) {
-			int verticalSlice = vectorGravityField_.getFieldHeight()/numThreads_;
-			gravityVectorFieldThreads_ = new ArrayList<Thread>();
-			for (int i = 0; i < numThreads_; i++) {
-				Thread th = new Thread(new GravityFieldRunnable(vectorField,i*verticalSlice,(i+1)*verticalSlice-1));
-				
-				//th.setPriority(Thread.MAX_PRIORITY);
-				//gravityVectorFieldThreads_.add(th);
-				//th.start();
-			  taskExecutor_.execute(new GravityFieldRunnable(vectorField,i*verticalSlice,(i+1)*verticalSlice-1));
-			}
-		}
-		else {
-			int verticalSlice = smoothGravityField_.getFieldHeight()/numThreads_;
-			gravitySmoothFieldThreads_ = new ArrayList<Thread>();
-			for (int i = 0; i < numThreads_; i++) {
-				Thread th = new Thread(new GravityFieldRunnable(vectorField,i*verticalSlice,(i+1)*verticalSlice-1));
-				th.setPriority(Thread.MAX_PRIORITY);
-				gravitySmoothFieldThreads_.add(th);
-				th.start();
-			  //taskExecutor.execute(new GravityFieldRunnable(i*verticalSlice,(i+1)*verticalSlice-1));
-			}
-		}
-
-		
-		
-		//taskExecutor.shutdown();
-		//try {
-		//  taskExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-		//} catch (InterruptedException e) {
-		//  
-		//}
-	}*/
 	
 	public void stopCalculatingGravity(boolean vectorField) {
 		// Wait for all to finish
@@ -520,11 +424,6 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 				}
 			}
 		}
-		//try {
-		//  taskExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-		//} catch (InterruptedException e) {
-		//  
-		//}
 	}
 	
 	public void updateFields() {
@@ -538,10 +437,6 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 				startCalculatingGravity(false);
 				started_ = true;
 			}
-				//for (Body b: bodies_) {
-				//	smoothGravityField_.addObjectToField(realPosToScreen(b.getPos()), realDistToScreen(b.getMass()), realDistToScreen(b.getRadius()));
-				//}
-			//}
 				
 		}
 		if (showingVectorField_ && (running_ || redrawField_ || scaleChanged_)) {
@@ -566,32 +461,14 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 			if (hintTextAlpha_ >= 1)
 				hintTextAlpha_ = 1;
 		}
-		/*try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+
 		synchronized (smoothGravityField_) {
 			stopCalculatingGravity(false);
 		}
 		synchronized (vectorGravityField_) {
 			stopCalculatingGravity(true);
 		}
-		//long start = Collections.
-		/*while (numFinished_.numFinished_ < 4 && showingSmoothField_ && started_) {
-			try {
-				//System.out.println("Not Done!!!!");
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
-		//while (numFinished_.numFinished_ < 4 && showingSmoothField_ && started_)
-		//	System.out.println("Not finished!");
-		//else
-			//System.out.println("Finished!");
+
 	}
 	
 	public void runCalculations() {
@@ -675,12 +552,7 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 			
 			setAccelVectorsDirty();
 		}
-			
-		//if (e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET)
-		//	bodyMass_ += 5;
-		//if (e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET)
-		//	bodyMass_ -= 5;
-			
+
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -979,12 +851,6 @@ public class DisplayPanel extends JPanel implements MouseMotionListener, MouseLi
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
-
-	//@Override
-	//public void mouseWheelMoved(MouseWheelEvent e) {
-	//	int notches = e.getWheelRotation();
-	//	scaleTarget_ *= Math.pow(1.2,-notches);
-	//}
  
 	public void changePlayState() {
 		running_ = !running_;
